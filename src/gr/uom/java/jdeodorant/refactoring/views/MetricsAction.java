@@ -112,8 +112,8 @@ public class MetricsAction  implements IObjectActionDelegate {
 						Cohesion cohesion = new Cohesion(system);
 						System.out.println(cohesion);
 						
-						PolymorphismFactor pf=new PolymorthismFactor(system);
-						System.out.println(pf);
+						//PolymorphismFactor pf=new PolymorthismFactor(system);
+						//System.out.println(pf);
 						
 						if(selectedPackageFragmentRoot != null) {
 							// package fragment root selected
