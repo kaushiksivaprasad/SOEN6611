@@ -41,9 +41,11 @@ public class ProjectUtils {
 		ListIterator<ClassObject> classIterator = obj.getClassListIterator();
 		while (classIterator.hasNext()) {
 			ClassObject classObject = classIterator.next();
-			loadInheritanceDetails(classObject);
-			extractPackageLevelDetails(classObject);
-			totNumberOfClasses++;
+			if(!classObject.isInterface()){
+				loadInheritanceDetails(classObject);
+				extractPackageLevelDetails(classObject);
+				totNumberOfClasses++;
+			}
 		}
 	}
 

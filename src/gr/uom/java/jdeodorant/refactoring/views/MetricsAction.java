@@ -4,6 +4,7 @@ import gr.uom.java.ast.ASTReader;
 import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.metrics.Cohesion;
+import gr.uom.java.ast.util.ProjectUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -108,9 +109,14 @@ public class MetricsAction  implements IObjectActionDelegate {
 							new ASTReader(selectedProject, monitor);
 						}
 						SystemObject system = ASTReader.getSystemObject();
-						//add a call to your metric
-						Cohesion cohesion = new Cohesion(system);
-						System.out.println(cohesion);
+						ProjectUtils.loadProjectDetails(system);
+						System.out.println(ProjectUtils.totNumberOfClasses);
+						System.out.println(ProjectUtils.totNumberOfMethods);
+						System.out.println(ProjectUtils.inheritanceTree);
+						System.out.println(ProjectUtils.packageDetails);
+//						//add a call to your metric
+//						Cohesion cohesion = new Cohesion(system);
+//						System.out.println(cohesion);
 						
 						//PolymorphismFactor pf=new PolymorthismFactor(system);
 						//System.out.println(pf);
