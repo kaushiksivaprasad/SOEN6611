@@ -3,6 +3,7 @@ package gr.uom.java.jdeodorant.refactoring.views;
 import gr.uom.java.ast.ASTReader;
 import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
+import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.Cohesion;
 
 import java.lang.reflect.InvocationTargetException;
@@ -114,6 +115,9 @@ public class MetricsAction  implements IObjectActionDelegate {
 						
 						//PolymorphismFactor pf=new PolymorthismFactor(system);
 						//System.out.println(pf);
+						
+						CF cf=new CF(system);
+						System.out.println(cf);
 						
 						if(selectedPackageFragmentRoot != null) {
 							// package fragment root selected
