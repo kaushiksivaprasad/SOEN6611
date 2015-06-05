@@ -5,6 +5,7 @@ import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.Cohesion;
+import gr.uom.java.ast.metrics.PF;
 import gr.uom.java.ast.util.ProjectUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -119,11 +120,11 @@ public class MetricsAction  implements IObjectActionDelegate {
 //						Cohesion cohesion = new Cohesion(system);
 //						System.out.println(cohesion);
 						
-						//PolymorphismFactor pf=new PolymorthismFactor(system);
-						//System.out.println(pf);
+						PF pf=new PF(system);
+						System.out.println("Polymorphism Factor:"+pf);
 						
 						CF cf=new CF(system);
-						System.out.println(cf);
+						System.out.println("Coupling Factor:"+cf);
 						
 						if(selectedPackageFragmentRoot != null) {
 							// package fragment root selected

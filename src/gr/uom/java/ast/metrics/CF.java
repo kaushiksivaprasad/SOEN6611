@@ -11,6 +11,7 @@ public class CF {
 
 	double TC,numerator;
 	double totalCF;
+	String totalCFStr;
 	Set<String> doneClasses = new HashSet<String>();
 	
 	public CF(SystemObject system) {
@@ -39,12 +40,15 @@ public class CF {
 		//System.out.println(TC);
 		//System.out.println(numerator);
 		totalCF=numerator/((TC*TC)-TC);
+		totalCFStr=numerator+"/"+((TC*TC)-TC);
 	}
 
-	
+	public double getCF(){
+		return totalCF;
+	}
 	
 	public String toString() {
-		return totalCF+"";
+		return totalCFStr+" ("+totalCF+")";
 	}
 
 }
