@@ -29,12 +29,12 @@ public class ProjectUtils {
 	 * To get the number of classes in the system.
 	 */
 	public static int totNumberOfClasses = 0;
-	
+
 	/**
 	 * Get the total number of methods in the system..
 	 */
 	public static int totNumberOfMethods = 0;
-	
+
 	private static Set<String> processedClasses = new HashSet<String>();
 
 	public static void loadProjectDetails(SystemObject obj) {
@@ -61,9 +61,8 @@ public class ProjectUtils {
 				children = new LinkedList<String>();
 			}
 			children.add(key);
-			key = ancestorName.trim();
+			inheritanceTree.put(ancestorName.trim(), children);
 		}
-		inheritanceTree.put(key, children);
 		methodsOfClass.put(key, classObject.getMethodList());
 		totNumberOfMethods += classObject.getMethodList().size();
 	}
@@ -95,18 +94,18 @@ public class ProjectUtils {
 			int indx = wholeClassName.lastIndexOf(".");
 			if (indx != -1) {
 				String packageName = wholeClassName.substring(0, indx);
-				if(processedClasses.contains(packageName)){ 
-					//check for inner classes.
+				if (processedClasses.contains(packageName)) {
+					// check for inner classes.
 					return extractPackageNameFromWholeClassName(packageName);
 				}
 				return wholeClassName.substring(0, indx);
 			}
-			//default package case..
-			else{
+			// default package case..
+			else {
 				return "default";
 			}
 		}
 		return null;
 	}
-	
+
 }
