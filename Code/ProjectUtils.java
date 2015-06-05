@@ -34,6 +34,8 @@ public class ProjectUtils {
 	 * Get the total number of methods in the system..
 	 */
 	public static int totNumberOfMethods = 0;
+	
+	private static Set<String> processedClasses = new HashSet<String>();
 
 	public static void loadProjectDetails(SystemObject obj) {
 		ListIterator<ClassObject> classIterator = obj.getClassListIterator();
@@ -45,7 +47,7 @@ public class ProjectUtils {
 		}
 	}
 
-	public static void loadInheritanceDetails(ClassObject classObject) {
+	private static void loadInheritanceDetails(ClassObject classObject) {
 		String ancestorName = null;
 		String key = classObject.getName().trim();
 		if (classObject.getSuperclass() != null) {
@@ -58,7 +60,7 @@ public class ProjectUtils {
 			if (children == null) {
 				children = new LinkedList<String>();
 			}
-			children.add(ancestorName);
+			children.add(key);
 			key = ancestorName.trim();
 		}
 		inheritanceTree.put(key, children);
@@ -66,7 +68,7 @@ public class ProjectUtils {
 		totNumberOfMethods += classObject.getMethodList().size();
 	}
 
-	public static void extractPackageLevelDetails(ClassObject classObject) {
+	private static void extractPackageLevelDetails(ClassObject classObject) {
 		String name = classObject.getName().trim();
 		String packageName = extractPackageNameFromWholeClassName(name);
 		if (packageName != null) {
@@ -75,6 +77,7 @@ public class ProjectUtils {
 				classesSet = new HashSet<String>();
 			}
 			classesSet.add(name);
+			processedClasses.add(name);
 			packageDetails.put(packageName, classesSet);
 		}
 	}
@@ -88,12 +91,22 @@ public class ProjectUtils {
 	 */
 	public static String extractPackageNameFromWholeClassName(
 			String wholeClassName) {
-		if (wholeClassName != null) {
+		if (wholeClassName != null && wholeClassName.length() > 0) {
 			int indx = wholeClassName.lastIndexOf(".");
-			if (indx < wholeClassName.length() - 1) {
+			if (indx != -1) {
+				String packageName = wholeClassName.substring(0, indx);
+				if(processedClasses.contains(packageName)){ 
+					//check for inner classes.
+					return extractPackageNameFromWholeClassName(packageName);
+				}
 				return wholeClassName.substring(0, indx);
+			}
+			//default package case..
+			else{
+				return "default";
 			}
 		}
 		return null;
 	}
+	
 }
