@@ -5,7 +5,11 @@ import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.Cohesion;
+<<<<<<< Updated upstream
 import gr.uom.java.ast.metrics.PF;
+=======
+import gr.uom.java.ast.metrics.MIF;
+>>>>>>> Stashed changes
 import gr.uom.java.ast.util.ProjectUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -112,10 +116,10 @@ public class MetricsAction  implements IObjectActionDelegate {
 						}
 						SystemObject system = ASTReader.getSystemObject();
 						ProjectUtils.loadProjectDetails(system);
-						System.out.println(ProjectUtils.totNumberOfClasses);
-						System.out.println(ProjectUtils.totNumberOfMethods);
-						System.out.println(ProjectUtils.inheritanceTree);
-						System.out.println(ProjectUtils.packageDetails);
+						System.out.println("Total classes "+ProjectUtils.totNumberOfClasses);
+						System.out.println("Total methods "+ProjectUtils.totNumberOfMethods);
+						System.out.println("Inheritance tree "+ProjectUtils.inheritanceTree);
+						System.out.println("Package details "+ProjectUtils.packageDetails);
 //						//add a call to your metric
 //						Cohesion cohesion = new Cohesion(system);
 //						System.out.println(cohesion);
@@ -123,8 +127,14 @@ public class MetricsAction  implements IObjectActionDelegate {
 						PF pf=new PF(system);
 						System.out.println("Polymorphism Factor:"+pf);
 						
+
 						CF cf=new CF(system);
 						System.out.println("Coupling Factor:"+cf);
+
+
+						
+						
+
 						
 						if(selectedPackageFragmentRoot != null) {
 							// package fragment root selected
