@@ -5,11 +5,8 @@ import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.Cohesion;
-<<<<<<< Updated upstream
 import gr.uom.java.ast.metrics.PF;
-=======
 import gr.uom.java.ast.metrics.MIF;
->>>>>>> Stashed changes
 import gr.uom.java.ast.util.ProjectUtils;
 
 import java.lang.reflect.InvocationTargetException;
