@@ -1,13 +1,10 @@
 package gr.uom.java.ast.util;
 
 import gr.uom.java.ast.ClassObject;
-import gr.uom.java.ast.MethodObject;
 import gr.uom.java.ast.SystemObject;
-
+import gr.uom.java.ast.TypeObject;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
@@ -15,63 +12,95 @@ public class ProjectUtils {
 	/**
 	 * This variable has details about all the children given a class's name.
 	 */
-	public static HashMap<String, LinkedList<String>> inheritanceTree = new HashMap<String, LinkedList<String>>();
+	public static HashMap<String, HashSet<String>> childrenMap = new HashMap<String, HashSet<String>>();
+	/**
+	 * This variable has details about all the immediate children a class has.
+	 */
+	public static HashMap<String, HashSet<String>> immediateChildrenGraph = new HashMap<String, HashSet<String>>();
 	/**
 	 * This variable has details about all the packages available in the project
 	 * and also classes within it.
 	 */
 	public static HashMap<String, Set<String>> packageDetails = new HashMap<String, Set<String>>();
 	/**
-	 * This variable has details about all the methods of a class`s name.
-	 */
-	public static HashMap<String, List<MethodObject>> methodsOfClass = new HashMap<String, List<MethodObject>>();
-	/**
 	 * To get the number of classes in the system.
 	 */
 	public static int totNumberOfClasses = 0;
-
 	/**
 	 * Get the total number of methods in the system..
 	 */
 	public static int totNumberOfMethods = 0;
-	
+
 	private static boolean ranOnce = false;
 
 	private static Set<String> processedClasses = new HashSet<String>();
 
+	private static Set<ClassObject> uniqueBaseClasses = new HashSet<ClassObject>();
+
+	public static Long totHierarchies = 0l;
+
 	public static void loadProjectDetails(SystemObject obj) {
-		if(!ranOnce){
-			ListIterator<ClassObject> classIterator = obj.getClassListIterator();
+		if (!ranOnce) {
+			ListIterator<ClassObject> classIterator = obj
+					.getClassListIterator();
 			while (classIterator.hasNext()) {
 				ClassObject classObject = classIterator.next();
-				if(!classObject.isInterface()){
-					loadInheritanceDetails(classObject);
+				if (!classObject.isInterface()) {
+					getTotNoOfChildren(classObject, new HashSet<String>(), obj);
+					loadInheritanceDetails(classObject, obj);
 					extractPackageLevelDetails(classObject);
 					totNumberOfClasses++;
+					totNumberOfMethods += classObject.getMethodList().size();
 				}
 			}
 			ranOnce = true;
 		}
 	}
 
-	private static void loadInheritanceDetails(ClassObject classObject) {
+	private static void getTotNoOfChildren(ClassObject classObj,
+			Set<String> childClasses, SystemObject sysObj) {
+		TypeObject superClass = classObj.getSuperclass();
+		if (superClass != null) {
+			String ancestorName = superClass.getClassType().trim();
+			ClassObject superClassObj = sysObj.getClassObject(ancestorName);
+			if (superClassObj != null) {
+				// to avoid java inbuilt classes..
+				HashSet<String> children = childrenMap.get(ancestorName);
+				if (children == null) {
+					children = new HashSet<String>();
+				}
+				children.add(classObj.getName());
+				children.addAll(childClasses);
+				childrenMap.put(ancestorName, children);
+				childClasses.add(classObj.getName());
+				getTotNoOfChildren(superClassObj, childClasses, sysObj);
+			}
+		} else {
+			if (!uniqueBaseClasses.contains(classObj)) {
+				uniqueBaseClasses.add(classObj);
+				totHierarchies++;
+			}
+		}
+	}
+
+	private static void loadInheritanceDetails(ClassObject classObject,
+			SystemObject sysObj) {
 		String ancestorName = null;
 		String key = classObject.getName().trim();
 		if (classObject.getSuperclass() != null) {
 			ancestorName = classObject.getSuperclass().toString();
 		}
-		LinkedList<String> children = null;
+		HashSet<String> children = null;
 		if (ancestorName != null && ancestorName.trim().length() > 0) {
 			// if the current class is inherited, ancestorName will not be null
-			children = inheritanceTree.get(ancestorName);
+			children = immediateChildrenGraph.get(ancestorName);
 			if (children == null) {
-				children = new LinkedList<String>();
+				children = new HashSet<String>();
 			}
 			children.add(key);
-			inheritanceTree.put(ancestorName.trim(), children);
+			if (sysObj.getClassObject(ancestorName) != null)
+				immediateChildrenGraph.put(ancestorName.trim(), children);
 		}
-		methodsOfClass.put(key, classObject.getMethodList());
-		totNumberOfMethods += classObject.getMethodList().size();
 	}
 
 	private static void extractPackageLevelDetails(ClassObject classObject) {
@@ -87,7 +116,6 @@ public class ProjectUtils {
 			packageDetails.put(packageName, classesSet);
 		}
 	}
-
 
 	private static String extractPackageNameFromWholeClassNameInteranal(
 			String wholeClassName) {
@@ -108,7 +136,7 @@ public class ProjectUtils {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * This method extracts packageName out of the whole className and returns
 	 * it.
@@ -116,7 +144,8 @@ public class ProjectUtils {
 	 * @param wholeClassName
 	 * @return
 	 */
-	public static String extractPackageNameFromWholeClassName(String wholeClassName){
+	public static String extractPackageNameFromWholeClassName(
+			String wholeClassName) {
 		if (wholeClassName != null && wholeClassName.length() > 0 && ranOnce) {
 			int indx = wholeClassName.lastIndexOf(".");
 			if (indx != -1) {

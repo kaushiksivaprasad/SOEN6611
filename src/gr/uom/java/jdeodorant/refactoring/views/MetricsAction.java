@@ -6,6 +6,7 @@ import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.metrics.AIF;
 import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.Cohesion;
+import gr.uom.java.ast.metrics.HidingFactor;
 import gr.uom.java.ast.metrics.PF;
 import gr.uom.java.ast.metrics.MIF;
 import gr.uom.java.ast.util.ProjectUtils;
@@ -114,20 +115,24 @@ public class MetricsAction  implements IObjectActionDelegate {
 						}
 						SystemObject system = ASTReader.getSystemObject();
 						ProjectUtils.loadProjectDetails(system);
-						System.out.println("Total classes "+ProjectUtils.totNumberOfClasses);
-						System.out.println("Total methods "+ProjectUtils.totNumberOfMethods);
-						System.out.println("Inheritance tree "+ProjectUtils.inheritanceTree);
-						System.out.println("Package details "+ProjectUtils.packageDetails);
+						HidingFactor h = new HidingFactor(system);
+//						System.out.println(h.mhfValueForClass);
+						System.out.println(ProjectUtils.totNumberOfClasses);
+//						System.out.println(ProjectUtils.totNumberOfMethods);
+						System.out.println(ProjectUtils.childrenMap);
+						System.out.println(ProjectUtils.totNumberOfMethods);
+						System.out.println(ProjectUtils.totHierarchies);
+//						System.out.println(ProjectUtils.packageDetails);
 //						//add a call to your metric
 //						Cohesion cohesion = new Cohesion(system);
 //						System.out.println(cohesion);
 						
-						PF pf=new PF(system);
-						System.out.println("Polymorphism Factor:"+pf);
-						
-
-						CF cf=new CF(system);
-						System.out.println("Coupling Factor:"+cf);
+//						PF pf=new PF(system);
+//						System.out.println("Polymorphism Factor:"+pf);
+//						
+//
+//						CF cf=new CF(system);
+//						System.out.println("Coupling Factor:"+cf);
 
 						MIF mif = new MIF(system);
 						

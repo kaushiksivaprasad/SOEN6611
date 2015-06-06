@@ -29,7 +29,7 @@ public class PF {
 			newM_overrideM_count=getOverridenNewMethodCount(classObject);
 			overriddenMethods+=newM_overrideM_count[0];
 			newMethods=newM_overrideM_count[1];
-			LinkedList<String> llClass=ProjectUtils.inheritanceTree.get(classObject.getName());
+			Set<String> llClass=ProjectUtils.childrenMap.get(classObject.getName());
 			
 			if(llClass!=null)
 			{	descendingClasses=llClass.size(); 
