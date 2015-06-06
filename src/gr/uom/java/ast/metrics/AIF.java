@@ -20,11 +20,12 @@ public class AIF {
 	private static int totalNumberOfAttributesInherited = 0;
 	private static int totalNumberOfMethodsDeclared = 0;
 	private static int totalDefinedAttributeCount = 0;
-	
+	static int inheritedPlusDeclared=0;
+	static double finalAttributeInheritanceFactor;
 	public AIF(SystemObject system) {
 		ListIterator<ClassObject> iterator = system.getClassListIterator();
 		FieldObject presentClassField;
-		int inheritedPlusDeclared = 0;
+		inheritedPlusDeclared = 0;
 		while (iterator.hasNext()) {
 			ClassObject classObject = iterator.next();		
 			totalDefinedAttributeCount =0;
@@ -57,14 +58,18 @@ public class AIF {
 		
 //		int inheritedPlusDeclared = totalNumberOfAttributesInherited + totalDefinedAttributeCount;
 		
-		double finalAttributeInheritanceFactor = (double) totalNumberOfAttributesInherited / inheritedPlusDeclared;
+		finalAttributeInheritanceFactor = (double) totalNumberOfAttributesInherited / inheritedPlusDeclared;
 		
 //		System.out.println("Total defined attribute :" + totalDefinedAttributeCount);
-		System.out.println();
-		System.out.println("Final value of AIF :"+ totalNumberOfAttributesInherited +"/"+
-		                      inheritedPlusDeclared +"="+finalAttributeInheritanceFactor);
+		//System.out.println();
+		//System.out.println("Final value of AIF :"+ totalNumberOfAttributesInherited +"/"+
+		//                      inheritedPlusDeclared +"="+finalAttributeInheritanceFactor);
 	}
-	
+	@Override
+	public String toString() {
+		return totalNumberOfAttributesInherited +"/"+
+                inheritedPlusDeclared +"="+finalAttributeInheritanceFactor;
+	}
 
 	private Set<String> getInheritedAttibutes(SystemObject system,
 			ClassObject classObject) {

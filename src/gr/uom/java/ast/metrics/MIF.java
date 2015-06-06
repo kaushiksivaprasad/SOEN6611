@@ -19,7 +19,7 @@ public class MIF {
 	HashMap<String, LinkedList<String>> inheritanceTree;
 	private static int totalNumberOfMethodsInherited = 0;
 	private static int totalNumberOfMethodsDeclared = 0;
-
+	static double finalMethodInheritanceFactor;
 	public MIF(SystemObject system) {
 
 		ListIterator<ClassObject> iterator = system.getClassListIterator();
@@ -45,14 +45,19 @@ public class MIF {
 			totalNumberOfMethodsDeclared = totalNumberOfMethodsDeclared + classObject.getMethodList().size();
 		}
 		
-		System.out.println("Total number of inherited methods :"+totalNumberOfMethodsInherited);
+		//System.out.println("Total number of inherited methods :"+totalNumberOfMethodsInherited);
 		
 		int inheritedPlusDeclared = totalNumberOfMethodsInherited + totalNumberOfMethodsDeclared;
 		
-		double finalMethodInheritanceFactor = (double) totalNumberOfMethodsInherited / inheritedPlusDeclared;
+		finalMethodInheritanceFactor = (double) totalNumberOfMethodsInherited / inheritedPlusDeclared;
 		
-		System.out.println("Final value of MIF :"+ finalMethodInheritanceFactor);
+		//System.out.println("Final value of MIF :"+ finalMethodInheritanceFactor);
 		
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Final value of MIF :"+ finalMethodInheritanceFactor;
 	}
 	
 	public Set<MethodObject> getInheritedMethods(SystemObject system, ClassObject classObject) {

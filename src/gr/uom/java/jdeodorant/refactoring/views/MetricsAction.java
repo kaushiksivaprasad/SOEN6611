@@ -48,7 +48,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 	public void run(IAction arg0) {
 		
 		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream(
+			writer = new PrintWriter(new FileOutputStream(
 				    new File("logMetric.txt"), 
 				    true )); 
 			JavaCore.addElementChangedListener(new ElementChangedListener());
@@ -148,8 +148,10 @@ public class MetricsAction  implements IObjectActionDelegate {
 						printLog("Coupling Factor:"+cf);
 
 						MIF mif = new MIF(system);
+						printLog(mif+"");
 						
 						AIF aif = new AIF(system);
+						printLog(aif+"");
 
 						
 						if(selectedPackageFragmentRoot != null) {
@@ -173,7 +175,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 					}
 				});
 			}
-			pw.close();
+			writer.close();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
