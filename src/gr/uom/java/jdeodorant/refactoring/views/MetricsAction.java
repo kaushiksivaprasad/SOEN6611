@@ -131,7 +131,8 @@ public class MetricsAction implements IObjectActionDelegate {
 						AIF aif = new AIF(system);
 
 						StringBuilder builder = new StringBuilder();
-						builder.append("Metrics :\n");
+						builder.append("\nMetrics :\n");
+						builder.append("MHF:\t");
 						builder.append(h.systemMHFValue + "\n");
 						builder.append("AHF:\t");
 						builder.append(h.systemAHFValue + "\n");

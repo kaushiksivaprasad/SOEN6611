@@ -36,7 +36,7 @@ public class MIF {
 					inheritedMethods.remove(presentClassMethod);
 				}
 			}
-			System.out.println("Inherited methods for class "+classObject.getName() +":" +inheritedMethods);
+			//System.out.println("Inherited methods for class "+classObject.getName() +":" +inheritedMethods);
 			
 			// Count total number of methods
 			totalNumberOfMethodsInherited = totalNumberOfMethodsInherited + inheritedMethods.size();

@@ -42,7 +42,7 @@ public class AIF {
 				}
 					totalDefinedAttributeCount++;
 			}
-			System.out.println("Inherited methods for class "+classObject.getName() +":" +inheritedAttributes);
+			//System.out.println("Inherited methods for class "+classObject.getName() +":" +inheritedAttributes);
 			
 			// Count total number of methods
 			totalNumberOfAttributesInherited = totalNumberOfAttributesInherited + inheritedAttributes.size();
@@ -53,7 +53,7 @@ public class AIF {
 //			totalNumberOfMethodsDeclared = totalNumberOfMethodsDeclared + classObject.getFieldIterator().size();
 		}
 		
-		System.out.println("Total number of inherited attributes :"+totalNumberOfAttributesInherited);
+		//System.out.println("Total number of inherited attributes :"+totalNumberOfAttributesInherited);
 		
 //		int inheritedPlusDeclared = totalNumberOfAttributesInherited + totalDefinedAttributeCount;
 		

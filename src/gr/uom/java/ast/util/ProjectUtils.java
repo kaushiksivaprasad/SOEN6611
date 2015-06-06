@@ -57,6 +57,7 @@ public class ProjectUtils {
 				totNumberOfMethods += classObject.getMethodList().size();
 			}
 		}
+		calculateNOCForSystem();
 		ranOnce = true;
 		
 	}
