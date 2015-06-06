@@ -67,7 +67,7 @@ public class ProjectUtils {
 		for(Map.Entry<String, HashSet<String>> entry : immediateChildrenGraph.entrySet()){
 			totChildrenForSystem += entry.getValue().size();
 		}
-		avgNOC = totChildrenForSystem/(double) immediateChildrenGraph.size();
+		avgNOC = totChildrenForSystem/(double) ProjectUtils.totNumberOfClasses;
 	}
 	private static void reInitializeDS(){
 		childrenMap = new HashMap<String, HashSet<String>>();

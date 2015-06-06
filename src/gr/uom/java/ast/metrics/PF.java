@@ -36,7 +36,7 @@ public class PF {
 			
 			if(llClass!=null)
 			{	
-				System.out.println(classObject.getName()+" "+llClass.size());
+				//System.out.println(classObject.getName()+" "+llClass.size());
 				descendingClasses=llClass.size(); 
 			}
 			else 
