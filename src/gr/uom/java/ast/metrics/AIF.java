@@ -27,6 +27,10 @@ public class AIF {
 		inheritedPlusDeclared = 0;
 		while (iterator.hasNext()) {
 			ClassObject classObject = iterator.next();		
+			
+			if(classObject.isInterface()){
+				continue;
+			}
 			totalDefinedAttributeCount =0;
 			// method call to get inherited methods of the class
 			Set<String> inheritedAttributes = getInheritedAttibutes(system, classObject);

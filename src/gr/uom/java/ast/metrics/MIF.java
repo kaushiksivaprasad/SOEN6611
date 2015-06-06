@@ -26,6 +26,10 @@ public class MIF {
 		while (iterator.hasNext()) {
 			ClassObject classObject = iterator.next();		
 			
+			if(classObject.isInterface()){
+				continue;
+			}
+			
 			// method call to get inherited methods of the class
 			Set<MethodObject> inheritedMethods = getInheritedMethods(system, classObject);
 
