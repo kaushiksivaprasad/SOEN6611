@@ -17,12 +17,14 @@ import java.util.Set;
 public class MIF {
 
 	HashMap<String, LinkedList<String>> inheritanceTree;
+	private static int totalNumberOfMethodsInherited = 0;
+	private static int totalNumberOfMethodsDeclared = 0;
 
 	public MIF(SystemObject system) {
 
 		ListIterator<ClassObject> iterator = system.getClassListIterator();
 		while (iterator.hasNext()) {
-			ClassObject classObject = iterator.next();
+			ClassObject classObject = iterator.next();			
 			Set<MethodObject> inheritedMethods = new HashSet<MethodObject>();
 			Set<String> classesInPackage = ProjectUtils.packageDetails
 					.get(ProjectUtils
@@ -55,22 +57,22 @@ public class MIF {
 					inheritedMethods.remove(presentClassMethod);
 				}
 			}
-			System.out.println(inheritedMethods);
+			System.out.println("Inherited methods for class "+classObject.getName() +":" +inheritedMethods);
+			
+			// Count total number of methods
+			totalNumberOfMethodsInherited = totalNumberOfMethodsInherited + inheritedMethods.size();
+			
+			// Count of methods declared in the present class
+			totalNumberOfMethodsDeclared = totalNumberOfMethodsDeclared + classObject.getMethodList().size();
 		}
-
-		// inheritanceTree = ProjectUtils.inheritanceTree;
-		//
-		// Iterator hashMapIterator = inheritanceTree.entrySet().iterator();
-		//
-		// while(hashMapIterator.hasNext()) {
-		// Map.Entry entry = (Map.Entry)hashMapIterator.next();
-		// System.out.println(entry.getKey() +" " +entry.getValue());
-		//
-		// ClassObject classValue = (ClassObject) entry.getKey();
-		// classValue.getSuperclass();
-		//
-		// }
-
-		// System.out.println(inheritanceTree);
+		
+		System.out.println("Total number of inherited methods :"+totalNumberOfMethodsInherited);
+		
+		int inheritedPlusDeclared = totalNumberOfMethodsInherited + totalNumberOfMethodsDeclared;
+		
+		double finalMethodInheritanceFactor = (double) totalNumberOfMethodsInherited / inheritedPlusDeclared;
+		
+		System.out.println("Final value of MIF :"+ finalMethodInheritanceFactor);
+		
 	}
 }
