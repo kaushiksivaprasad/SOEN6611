@@ -3,6 +3,7 @@ package gr.uom.java.jdeodorant.refactoring.views;
 import gr.uom.java.ast.ASTReader;
 import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
+import gr.uom.java.ast.metrics.AIF;
 import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.Cohesion;
 import gr.uom.java.ast.metrics.PF;
@@ -128,9 +129,9 @@ public class MetricsAction  implements IObjectActionDelegate {
 						CF cf=new CF(system);
 						System.out.println("Coupling Factor:"+cf);
 
-
+						MIF mif = new MIF(system);
 						
-						
+						AIF aif = new AIF(system);
 
 						
 						if(selectedPackageFragmentRoot != null) {

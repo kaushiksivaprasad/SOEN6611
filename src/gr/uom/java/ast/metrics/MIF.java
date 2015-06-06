@@ -24,31 +24,10 @@ public class MIF {
 
 		ListIterator<ClassObject> iterator = system.getClassListIterator();
 		while (iterator.hasNext()) {
-			ClassObject classObject = iterator.next();			
-			Set<MethodObject> inheritedMethods = new HashSet<MethodObject>();
-			Set<String> classesInPackage = ProjectUtils.packageDetails
-					.get(ProjectUtils
-							.extractPackageNameFromWholeClassName(classObject
-									.getName()));
-			TypeObject superClass = classObject.getSuperclass();
-			while (superClass != null && system.getClassObject(superClass
-					.getClassType())!=null) {
-
-				ClassObject superClassObject = system.getClassObject(superClass
-						.getClassType());
-				List<MethodObject> superClassMethods = superClassObject
-						.getMethodList();
-				for (MethodObject method : superClassMethods) {
-					if (method.getAccess().equals(Access.PUBLIC)
-							|| method.getAccess().equals(Access.PROTECTED)
-							&& !method.isStatic()
-							|| (method.getAccess().equals(Access.NONE) && classesInPackage
-									.contains(superClassObject.getName()))) {
-						inheritedMethods.add(method);
-					}
-				}
-				superClass = superClassObject.getSuperclass();
-			}
+			ClassObject classObject = iterator.next();		
+			
+			// method call to get inherited methods of the class
+			Set<MethodObject> inheritedMethods = getInheritedMethods(system, classObject);
 
 			List<MethodObject> presentClassMethods = classObject
 					.getMethodList();
@@ -74,5 +53,34 @@ public class MIF {
 		
 		System.out.println("Final value of MIF :"+ finalMethodInheritanceFactor);
 		
+	}
+	
+	public Set<MethodObject> getInheritedMethods(SystemObject system, ClassObject classObject) {
+		Set<MethodObject> inheritedMethods = new HashSet<MethodObject>();
+		Set<String> classesInPackage = ProjectUtils.packageDetails
+				.get(ProjectUtils
+						.extractPackageNameFromWholeClassName(classObject
+								.getName()));
+		TypeObject superClass = classObject.getSuperclass();
+		while (superClass != null && system.getClassObject(superClass
+				.getClassType())!=null) {
+
+			ClassObject superClassObject = system.getClassObject(superClass
+					.getClassType());
+			List<MethodObject> superClassMethods = superClassObject
+					.getMethodList();
+			for (MethodObject method : superClassMethods) {
+				if (method.getAccess().equals(Access.PUBLIC)
+						|| method.getAccess().equals(Access.PROTECTED)
+						&& !method.isStatic()
+						|| (method.getAccess().equals(Access.NONE) && classesInPackage
+								.contains(superClassObject.getName()))) {
+					inheritedMethods.add(method);
+				}
+			}
+			superClass = superClassObject.getSuperclass();
+		}
+		
+		return inheritedMethods;
 	}
 }
