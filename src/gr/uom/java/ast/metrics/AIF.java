@@ -64,6 +64,7 @@ public class AIF {
 		System.out.println("Final value of AIF :"+ totalNumberOfAttributesInherited +"/"+
 		                      inheritedPlusDeclared +"="+finalAttributeInheritanceFactor);
 	}
+	
 
 	private Set<String> getInheritedAttibutes(SystemObject system,
 			ClassObject classObject) {

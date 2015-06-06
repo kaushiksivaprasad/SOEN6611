@@ -11,6 +11,9 @@ import gr.uom.java.ast.metrics.PF;
 import gr.uom.java.ast.metrics.MIF;
 import gr.uom.java.ast.util.ProjectUtils;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -42,9 +45,11 @@ public class MetricsAction  implements IObjectActionDelegate {
 	private ICompilationUnit selectedCompilationUnit;
 	private IType selectedType;
 	private IMethod selectedMethod;
-	
+	private static PrintWriter writer;
 	public void run(IAction arg0) {
+		
 		try {
+			writer = new PrintWriter("logMetric.txt", "UTF-8");
 			JavaCore.addElementChangedListener(new ElementChangedListener());
 			CompilationUnitCache.getInstance().clearCache();
 			if(selection instanceof IStructuredSelection) {
@@ -116,23 +121,27 @@ public class MetricsAction  implements IObjectActionDelegate {
 						SystemObject system = ASTReader.getSystemObject();
 						ProjectUtils.loadProjectDetails(system);
 						HidingFactor h = new HidingFactor(system);
-//						System.out.println(h.mhfValueForClass);
-						System.out.println(ProjectUtils.totNumberOfClasses);
-//						System.out.println(ProjectUtils.totNumberOfMethods);
-						System.out.println(ProjectUtils.childrenMap);
-						System.out.println(ProjectUtils.totNumberOfMethods);
-						System.out.println(ProjectUtils.totHierarchies);
-//						System.out.println(ProjectUtils.packageDetails);
+						
+						printLog(ProjectUtils.totNumberOfClasses+"");
+						printLog(ProjectUtils.totNumberOfClasses+"");
+						
+//						printLog(h.mhfValueForClass+"");
+						printLog(ProjectUtils.totNumberOfClasses+"");
+//						printLog(ProjectUtils.totNumberOfMethods+"");
+						printLog(ProjectUtils.childrenMap+"");
+						printLog(ProjectUtils.totNumberOfMethods+"");
+						printLog(ProjectUtils.totHierarchies+"");
+//						printLog(ProjectUtils.packageDetails+"");
 //						//add a call to your metric
 //						Cohesion cohesion = new Cohesion(system);
 //						System.out.println(cohesion);
 						
-//						PF pf=new PF(system);
-//						System.out.println("Polymorphism Factor:"+pf);
-//						
-//
-//						CF cf=new CF(system);
-//						System.out.println("Coupling Factor:"+cf);
+						PF pf=new PF(system);
+						printLog("Polymorphism Factor:"+pf);
+						
+
+						CF cf=new CF(system);
+						printLog("Coupling Factor:"+cf);
 
 						MIF mif = new MIF(system);
 						
@@ -164,7 +173,10 @@ public class MetricsAction  implements IObjectActionDelegate {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+		
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -173,5 +185,10 @@ public class MetricsAction  implements IObjectActionDelegate {
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		this.part = targetPart;
+	}
+	public static void printLog(String lineToWrite)
+	{
+		System.out.println(lineToWrite);
+		writer.println(lineToWrite);
 	}
 }
