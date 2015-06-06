@@ -61,7 +61,7 @@ public class MIF {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Final value of MIF :"+ finalMethodInheritanceFactor;
+		return finalMethodInheritanceFactor+"";
 	}
 	
 	public Set<MethodObject> getInheritedMethods(SystemObject system, ClassObject classObject) {
