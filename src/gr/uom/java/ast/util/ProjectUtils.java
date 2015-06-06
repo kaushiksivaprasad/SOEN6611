@@ -3,9 +3,11 @@ package gr.uom.java.ast.util;
 import gr.uom.java.ast.ClassObject;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.TypeObject;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 public class ProjectUtils {
@@ -16,7 +18,7 @@ public class ProjectUtils {
 	/**
 	 * This variable has details about all the immediate children a class has.
 	 */
-	public static HashMap<String, HashSet<String>> immediateChildrenGraph = new HashMap<String, HashSet<String>>();
+	private static HashMap<String, HashSet<String>> immediateChildrenGraph = new HashMap<String, HashSet<String>>();
 	/**
 	 * This variable has details about all the packages available in the project
 	 * and also classes within it.
@@ -38,23 +40,45 @@ public class ProjectUtils {
 	private static Set<ClassObject> uniqueBaseClasses = new HashSet<ClassObject>();
 
 	public static Long totHierarchies = 0l;
+	
+	public static Double avgNOC = 0.0;
 
 	public static void loadProjectDetails(SystemObject obj) {
-		if (!ranOnce) {
-			ListIterator<ClassObject> classIterator = obj
-					.getClassListIterator();
-			while (classIterator.hasNext()) {
-				ClassObject classObject = classIterator.next();
-				if (!classObject.isInterface()) {
-					getTotNoOfChildren(classObject, new HashSet<String>(), obj);
-					loadInheritanceDetails(classObject, obj);
-					extractPackageLevelDetails(classObject);
-					totNumberOfClasses++;
-					totNumberOfMethods += classObject.getMethodList().size();
-				}
+		ranOnce = false;
+		reInitializeDS();
+		ListIterator<ClassObject> classIterator = obj.getClassListIterator();
+		while (classIterator.hasNext()) {
+			ClassObject classObject = classIterator.next();
+			if (!classObject.isInterface()) {
+				getTotNoOfChildren(classObject, new HashSet<String>(), obj);
+				loadInheritanceDetails(classObject, obj);
+				extractPackageLevelDetails(classObject);
+				totNumberOfClasses++;
+				totNumberOfMethods += classObject.getMethodList().size();
 			}
-			ranOnce = true;
 		}
+		ranOnce = true;
+		
+	}
+	
+	private static void calculateNOCForSystem(){
+		Long totChildrenForSystem = 0l;
+		for(Map.Entry<String, HashSet<String>> entry : immediateChildrenGraph.entrySet()){
+			totChildrenForSystem += entry.getValue().size();
+		}
+		avgNOC = totChildrenForSystem/(double) immediateChildrenGraph.size();
+	}
+	private static void reInitializeDS(){
+		childrenMap = new HashMap<String, HashSet<String>>();
+		immediateChildrenGraph = new HashMap<String, HashSet<String>>();
+		packageDetails = new HashMap<String, Set<String>>();
+		totNumberOfClasses = 0;
+		totNumberOfMethods = 0;
+		ranOnce = false;
+		processedClasses = new HashSet<String>();
+		uniqueBaseClasses = new HashSet<ClassObject>();
+		totHierarchies = 0l;
+		avgNOC = 0.0;
 	}
 
 	private static void getTotNoOfChildren(ClassObject classObj,

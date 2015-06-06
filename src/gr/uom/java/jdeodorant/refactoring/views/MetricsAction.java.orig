@@ -4,15 +4,13 @@ import gr.uom.java.ast.ASTReader;
 import gr.uom.java.ast.CompilationUnitCache;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.metrics.AIF;
-import gr.uom.java.ast.metrics.CF;
 import gr.uom.java.ast.metrics.HidingFactor;
 import gr.uom.java.ast.metrics.MIF;
-import gr.uom.java.ast.metrics.PF;
 import gr.uom.java.ast.util.ProjectUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -48,9 +46,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 	public void run(IAction arg0) {
 		
 		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream(
-				    new File("logMetric.txt"), 
-				    true )); 
+			writer = new PrintWriter("logMetric.txt", "UTF-8");
 			JavaCore.addElementChangedListener(new ElementChangedListener());
 			CompilationUnitCache.getInstance().clearCache();
 			if(selection instanceof IStructuredSelection) {
@@ -122,13 +118,26 @@ public class MetricsAction  implements IObjectActionDelegate {
 						SystemObject system = ASTReader.getSystemObject();
 						ProjectUtils.loadProjectDetails(system);
 						HidingFactor h = new HidingFactor(system);
+<<<<<<< HEAD
+						
+						printLog(ProjectUtils.totNumberOfClasses+"");
+						printLog(ProjectUtils.totNumberOfClasses+"");
+						
+//						printLog(h.mhfValueForClass+"");
+						printLog(ProjectUtils.totNumberOfClasses+"");
+//						printLog(ProjectUtils.totNumberOfMethods+"");
+						printLog(ProjectUtils.childrenMap+"");
+						printLog(ProjectUtils.totNumberOfMethods+"");
+						printLog(ProjectUtils.totHierarchies+"");
+//						printLog(ProjectUtils.packageDetails+"");
+=======
 						StringBuilder builder = new StringBuilder();
 						builder.append("Metrics :\n");
+						builder.append("MHF:\t");
 						builder.append(h.systemMHFValue+"\n");
 						builder.append("AHF:\t");
-						builder.append(h.systemAHFValue+"\n");
-						builder.append();
-						printLog(ProjectUtils.totNumberOfClasses+"");
+						builder.append(h.systemAHFValue+"\n")
+
 //						System.out.println(h.mhfValueForClass);
 						System.out.println(ProjectUtils.totNumberOfClasses);
 //						System.out.println(ProjectUtils.totNumberOfMethods);
@@ -136,6 +145,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 						System.out.println(ProjectUtils.totNumberOfMethods);
 						System.out.println(ProjectUtils.totHierarchies);
 //						System.out.println(ProjectUtils.packageDetails);
+>>>>>>> Final code changes
 //						//add a call to your metric
 //						Cohesion cohesion = new Cohesion(system);
 //						System.out.println(cohesion);
@@ -173,7 +183,6 @@ public class MetricsAction  implements IObjectActionDelegate {
 					}
 				});
 			}
-			pw.close();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -181,6 +190,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -193,6 +203,6 @@ public class MetricsAction  implements IObjectActionDelegate {
 	public static void printLog(String lineToWrite)
 	{
 		System.out.println(lineToWrite);
-		writer.append(lineToWrite);
+		writer.println(lineToWrite);
 	}
 }
