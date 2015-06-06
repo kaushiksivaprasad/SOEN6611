@@ -54,7 +54,7 @@ public class CF {
 	}
 	
 	public String toString() {
-		return totalCFStr+" ("+totalCF+")";
+		return totalCF+"";
 	}
 
 }

@@ -72,7 +72,7 @@ public class PF {
 	
 	
 	public String toString() {
-		return totalPF+"("+overriddenMethods+"/"+denominator+")";
+		return totalPF+"";
 	}
 
 }

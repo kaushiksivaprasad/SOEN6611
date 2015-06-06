@@ -70,8 +70,7 @@ public class AIF {
 	}
 	@Override
 	public String toString() {
-		return totalNumberOfAttributesInherited +"/"+
-                inheritedPlusDeclared +"="+finalAttributeInheritanceFactor;
+		return finalAttributeInheritanceFactor+"";
 	}
 
 	private Set<String> getInheritedAttibutes(SystemObject system,
