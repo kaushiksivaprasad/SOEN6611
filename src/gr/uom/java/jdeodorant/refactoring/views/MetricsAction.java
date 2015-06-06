@@ -50,7 +50,7 @@ public class MetricsAction implements IObjectActionDelegate {
 
 		try {
 			writer = new PrintWriter(new FileOutputStream(new File(
-					"e://logMetric.txt"), true));
+					"d://logMetric.txt"), true));
 			JavaCore.addElementChangedListener(new ElementChangedListener());
 			CompilationUnitCache.getInstance().clearCache();
 			if (selection instanceof IStructuredSelection) {
@@ -151,6 +151,12 @@ public class MetricsAction implements IObjectActionDelegate {
 								+ "\n");
 						builder.append("System NOH:\t"+ProjectUtils.totHierarchies+"\n");
 						builder.append("Avg. NOC:\t"+ProjectUtils.avgNOC+"\n");
+						
+						
+						builder.append(h.systemMHFValue +";"+h.systemAHFValue+";"+mif+";"+aif+";"+pf+";"+cf+";"+
+						ProjectUtils.totNumberOfClasses+";"+(ProjectUtils.totNumberOfMethods / (float) ProjectUtils.totNumberOfClasses)+";"+
+						ProjectUtils.totHierarchies+";"+ProjectUtils.avgNOC+"\n\n");
+						
 						builder.append("*****END Of METRIC*****");
 						
 						printLog(builder.toString());
