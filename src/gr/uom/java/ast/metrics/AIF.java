@@ -10,7 +10,6 @@ import java.util.Set;
 import gr.uom.java.ast.Access;
 import gr.uom.java.ast.ClassObject;
 import gr.uom.java.ast.FieldObject;
-import gr.uom.java.ast.MethodObject;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.TypeObject;
 import gr.uom.java.ast.util.ProjectUtils;
@@ -24,25 +23,31 @@ public class AIF {
 	
 	public AIF(SystemObject system) {
 		ListIterator<ClassObject> iterator = system.getClassListIterator();
+		FieldObject presentClassField;
+		int inheritedPlusDeclared = 0;
 		while (iterator.hasNext()) {
 			ClassObject classObject = iterator.next();		
-			
+			totalDefinedAttributeCount =0;
 			// method call to get inherited methods of the class
-			Set<FieldObject> inheritedAttributes = getInheritedAttibutes(system, classObject);
+			Set<String> inheritedAttributes = getInheritedAttibutes(system, classObject);
 			
 			ListIterator<FieldObject> presentClassFields = classObject.getFieldIterator();
 			while (presentClassFields.hasNext()) {				
-				FieldObject presentClassField = presentClassFields.next();
-				
-				if (inheritedAttributes.contains(presentClassField)) {
-					inheritedAttributes.remove(presentClassField);
+				presentClassField = presentClassFields.next();
+								
+				if (inheritedAttributes.contains(presentClassField.toString())) {
+					
+					inheritedAttributes.remove(presentClassField.toString());
+					presentClassFields.remove();
 				}
-				totalDefinedAttributeCount++;
+					totalDefinedAttributeCount++;
 			}
 			System.out.println("Inherited methods for class "+classObject.getName() +":" +inheritedAttributes);
 			
 			// Count total number of methods
 			totalNumberOfAttributesInherited = totalNumberOfAttributesInherited + inheritedAttributes.size();
+			
+			inheritedPlusDeclared = inheritedPlusDeclared + (inheritedAttributes.size() + totalDefinedAttributeCount);
 			
 //			// Count of methods declared in the present class
 //			totalNumberOfMethodsDeclared = totalNumberOfMethodsDeclared + classObject.getFieldIterator().size();
@@ -50,17 +55,20 @@ public class AIF {
 		
 		System.out.println("Total number of inherited attributes :"+totalNumberOfAttributesInherited);
 		
-		int inheritedPlusDeclared = totalNumberOfAttributesInherited + totalDefinedAttributeCount;
+//		int inheritedPlusDeclared = totalNumberOfAttributesInherited + totalDefinedAttributeCount;
 		
 		double finalAttributeInheritanceFactor = (double) totalNumberOfAttributesInherited / inheritedPlusDeclared;
 		
-		System.out.println("Final value of MIF :"+ finalAttributeInheritanceFactor);
+//		System.out.println("Total defined attribute :" + totalDefinedAttributeCount);
+		System.out.println();
+		System.out.println("Final value of AIF :"+ totalNumberOfAttributesInherited +"/"+
+		                      inheritedPlusDeclared +"="+finalAttributeInheritanceFactor);
 	}
 
-	private Set<FieldObject> getInheritedAttibutes(SystemObject system,
+	private Set<String> getInheritedAttibutes(SystemObject system,
 			ClassObject classObject) {
 		
-		Set<FieldObject> inheritedFields = new HashSet<FieldObject>();
+		Set<String> inheritedFields = new HashSet<String>();
 		Set<String> classesInPackage = ProjectUtils.packageDetails
 				.get(ProjectUtils
 						.extractPackageNameFromWholeClassName(classObject
@@ -82,7 +90,7 @@ public class AIF {
 						&& !field.isStatic()
 						|| (field.getAccess().equals(Access.NONE) && classesInPackage
 								.contains(superClassObject.getName()))) {
-					inheritedFields.add(field);
+					inheritedFields.add(field.toString());
 				}
 			}
 			superClass = superClassObject.getSuperclass();
