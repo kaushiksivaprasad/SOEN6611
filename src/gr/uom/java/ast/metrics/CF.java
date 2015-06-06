@@ -21,12 +21,18 @@ public class CF {
 		ListIterator<ClassObject> iterator2 = system.getClassListIterator();
 		
 		while(iterator1.hasNext()) {
-			TC++;
+			
 			ClassObject classObject1 = iterator1.next();
+			if(classObject1.isInterface())
+				continue;
+			
+			TC++;
 			doneClasses.add(classObject1.getName());
 			iterator2 = system.getClassListIterator();
 			while(iterator2.hasNext()) {
 				ClassObject classObject2 = iterator2.next();
+				if(classObject2.isInterface())
+					continue;
 				if(!doneClasses.contains(classObject2.getName())){
 					if(classObject2.equals(classObject1) || classObject2.isFriend(classObject1.getName())||
 							classObject1.equals(classObject2) || classObject1.isFriend(classObject2.getName()))

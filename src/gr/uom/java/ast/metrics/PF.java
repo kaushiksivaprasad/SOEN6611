@@ -26,6 +26,9 @@ public class PF {
 		ListIterator<ClassObject> iterator = system.getClassListIterator();
 		while(iterator.hasNext()) {
 			ClassObject classObject = iterator.next();
+			if(classObject.isInterface())
+				continue;
+			
 			newM_overrideM_count=getOverridenNewMethodCount(classObject);
 			newMethods=newM_overrideM_count[0];
 			overriddenMethods+=newM_overrideM_count[1];
