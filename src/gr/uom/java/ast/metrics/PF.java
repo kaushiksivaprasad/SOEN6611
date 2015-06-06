@@ -27,13 +27,14 @@ public class PF {
 		while(iterator.hasNext()) {
 			ClassObject classObject = iterator.next();
 			newM_overrideM_count=getOverridenNewMethodCount(classObject);
-			overriddenMethods+=newM_overrideM_count[0];
-			newMethods=newM_overrideM_count[1];
+			newMethods=newM_overrideM_count[0];
+			overriddenMethods+=newM_overrideM_count[1];
 			Set<String> llClass=ProjectUtils.childrenMap.get(classObject.getName());
 			
 			if(llClass!=null)
-			{	descendingClasses=llClass.size(); 
-			//System.out.println("asdsada"+descendingClasses);
+			{	
+				System.out.println(classObject.getName()+" "+llClass.size());
+				descendingClasses=llClass.size(); 
 			}
 			else 
 				descendingClasses=0;
@@ -68,7 +69,7 @@ public class PF {
 	
 	
 	public String toString() {
-		return totalPF+"";
+		return totalPF+"("+overriddenMethods+"/"+denominator+")";
 	}
 
 }

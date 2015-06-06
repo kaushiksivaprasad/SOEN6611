@@ -49,7 +49,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 		
 		try {
 			writer = new PrintWriter(new FileOutputStream(
-				    new File("logMetric.txt"), 
+				    new File("../logMetric.txt"), 
 				    true )); 
 			JavaCore.addElementChangedListener(new ElementChangedListener());
 			CompilationUnitCache.getInstance().clearCache();
@@ -121,24 +121,25 @@ public class MetricsAction  implements IObjectActionDelegate {
 						}
 						SystemObject system = ASTReader.getSystemObject();
 						ProjectUtils.loadProjectDetails(system);
-						HidingFactor h = new HidingFactor(system);
-						StringBuilder builder = new StringBuilder();
-						builder.append("Metrics :\n");
-						builder.append(h.systemMHFValue+"\n");
-						builder.append("AHF:\t");
-						builder.append(h.systemAHFValue+"\n");
-						builder.append();
-						printLog(ProjectUtils.totNumberOfClasses+"");
-//						System.out.println(h.mhfValueForClass);
-						System.out.println(ProjectUtils.totNumberOfClasses);
-//						System.out.println(ProjectUtils.totNumberOfMethods);
 						System.out.println(ProjectUtils.childrenMap);
-						System.out.println(ProjectUtils.totNumberOfMethods);
-						System.out.println(ProjectUtils.totHierarchies);
-//						System.out.println(ProjectUtils.packageDetails);
-//						//add a call to your metric
-//						Cohesion cohesion = new Cohesion(system);
-//						System.out.println(cohesion);
+//						HidingFactor h = new HidingFactor(system);
+//						StringBuilder builder = new StringBuilder();
+//						builder.append("Metrics :\n");
+//						builder.append(h.systemMHFValue+"\n");
+//						builder.append("AHF:\t");
+//						builder.append(h.systemAHFValue+"\n");
+//						//builder.append();
+//						printLog(ProjectUtils.totNumberOfClasses+"");
+////						System.out.println(h.mhfValueForClass);
+//						System.out.println(ProjectUtils.totNumberOfClasses);
+////						System.out.println(ProjectUtils.totNumberOfMethods);
+//						System.out.println(ProjectUtils.childrenMap);
+//						System.out.println(ProjectUtils.totNumberOfMethods);
+//						System.out.println(ProjectUtils.totHierarchies);
+////						System.out.println(ProjectUtils.packageDetails);
+////						//add a call to your metric
+////						Cohesion cohesion = new Cohesion(system);
+////						System.out.println(cohesion);
 						
 						PF pf=new PF(system);
 						printLog("Polymorphism Factor:"+pf);
@@ -147,11 +148,11 @@ public class MetricsAction  implements IObjectActionDelegate {
 						CF cf=new CF(system);
 						printLog("Coupling Factor:"+cf);
 
-						MIF mif = new MIF(system);
-						printLog(mif+"");
-						
-						AIF aif = new AIF(system);
-						printLog(aif+"");
+//						MIF mif = new MIF(system);
+//						printLog(mif+"");
+//						
+//						AIF aif = new AIF(system);
+//						printLog(aif+"");
 
 						
 						if(selectedPackageFragmentRoot != null) {
