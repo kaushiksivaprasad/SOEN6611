@@ -33,11 +33,11 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
 
-public class MetricsAction  implements IObjectActionDelegate {
-	
+public class MetricsAction implements IObjectActionDelegate {
+
 	private IWorkbenchPart part;
 	private ISelection selection;
-	
+
 	private IJavaProject selectedProject;
 	private IPackageFragmentRoot selectedPackageFragmentRoot;
 	private IPackageFragment selectedPackageFragment;
@@ -45,63 +45,58 @@ public class MetricsAction  implements IObjectActionDelegate {
 	private IType selectedType;
 	private IMethod selectedMethod;
 	private static PrintWriter writer;
+
 	public void run(IAction arg0) {
-		
+
 		try {
-			writer = new PrintWriter(new FileOutputStream(
-				    new File("../logMetric.txt"), 
-				    true )); 
+			writer = new PrintWriter(new FileOutputStream(new File(
+					"e://logMetric.txt"), true));
 			JavaCore.addElementChangedListener(new ElementChangedListener());
 			CompilationUnitCache.getInstance().clearCache();
-			if(selection instanceof IStructuredSelection) {
-				IStructuredSelection structuredSelection = (IStructuredSelection)selection;
+			if (selection instanceof IStructuredSelection) {
+				IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 				Object element = structuredSelection.getFirstElement();
-				if(element instanceof IJavaProject) {
-					selectedProject = (IJavaProject)element;
+				if (element instanceof IJavaProject) {
+					selectedProject = (IJavaProject) element;
 					selectedPackageFragmentRoot = null;
 					selectedPackageFragment = null;
 					selectedCompilationUnit = null;
 					selectedType = null;
 					selectedMethod = null;
-				}
-				else if(element instanceof IPackageFragmentRoot) {
-					IPackageFragmentRoot packageFragmentRoot = (IPackageFragmentRoot)element;
+				} else if (element instanceof IPackageFragmentRoot) {
+					IPackageFragmentRoot packageFragmentRoot = (IPackageFragmentRoot) element;
 					selectedProject = packageFragmentRoot.getJavaProject();
 					selectedPackageFragmentRoot = packageFragmentRoot;
 					selectedPackageFragment = null;
 					selectedCompilationUnit = null;
 					selectedType = null;
 					selectedMethod = null;
-				}
-				else if(element instanceof IPackageFragment) {
-					IPackageFragment packageFragment = (IPackageFragment)element;
+				} else if (element instanceof IPackageFragment) {
+					IPackageFragment packageFragment = (IPackageFragment) element;
 					selectedProject = packageFragment.getJavaProject();
 					selectedPackageFragment = packageFragment;
 					selectedPackageFragmentRoot = null;
 					selectedCompilationUnit = null;
 					selectedType = null;
 					selectedMethod = null;
-				}
-				else if(element instanceof ICompilationUnit) {
-					ICompilationUnit compilationUnit = (ICompilationUnit)element;
+				} else if (element instanceof ICompilationUnit) {
+					ICompilationUnit compilationUnit = (ICompilationUnit) element;
 					selectedProject = compilationUnit.getJavaProject();
 					selectedCompilationUnit = compilationUnit;
 					selectedPackageFragmentRoot = null;
 					selectedPackageFragment = null;
 					selectedType = null;
 					selectedMethod = null;
-				}
-				else if(element instanceof IType) {
-					IType type = (IType)element;
+				} else if (element instanceof IType) {
+					IType type = (IType) element;
 					selectedProject = type.getJavaProject();
 					selectedType = type;
 					selectedPackageFragmentRoot = null;
 					selectedPackageFragment = null;
 					selectedCompilationUnit = null;
 					selectedMethod = null;
-				}
-				else if(element instanceof IMethod) {
-					IMethod method = (IMethod)element;
+				} else if (element instanceof IMethod) {
+					IMethod method = (IMethod) element;
 					selectedProject = method.getJavaProject();
 					selectedMethod = method;
 					selectedPackageFragmentRoot = null;
@@ -112,65 +107,63 @@ public class MetricsAction  implements IObjectActionDelegate {
 				IWorkbench wb = PlatformUI.getWorkbench();
 				IProgressService ps = wb.getProgressService();
 				ps.busyCursorWhile(new IRunnableWithProgress() {
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-						if(ASTReader.getSystemObject() != null && selectedProject.equals(ASTReader.getExaminedProject())) {
-							new ASTReader(selectedProject, ASTReader.getSystemObject(), monitor);
-						}
-						else {
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						if (ASTReader.getSystemObject() != null
+								&& selectedProject.equals(ASTReader
+										.getExaminedProject())) {
+							new ASTReader(selectedProject, ASTReader
+									.getSystemObject(), monitor);
+						} else {
 							new ASTReader(selectedProject, monitor);
 						}
 						SystemObject system = ASTReader.getSystemObject();
 						ProjectUtils.loadProjectDetails(system);
-						System.out.println(ProjectUtils.childrenMap);
-//						HidingFactor h = new HidingFactor(system);
-//						StringBuilder builder = new StringBuilder();
-//						builder.append("Metrics :\n");
-//						builder.append(h.systemMHFValue+"\n");
-//						builder.append("AHF:\t");
-//						builder.append(h.systemAHFValue+"\n");
-//						//builder.append();
-//						printLog(ProjectUtils.totNumberOfClasses+"");
-////						System.out.println(h.mhfValueForClass);
-//						System.out.println(ProjectUtils.totNumberOfClasses);
-////						System.out.println(ProjectUtils.totNumberOfMethods);
-//						System.out.println(ProjectUtils.childrenMap);
-//						System.out.println(ProjectUtils.totNumberOfMethods);
-//						System.out.println(ProjectUtils.totHierarchies);
-////						System.out.println(ProjectUtils.packageDetails);
-////						//add a call to your metric
-////						Cohesion cohesion = new Cohesion(system);
-////						System.out.println(cohesion);
-						
-						PF pf=new PF(system);
-						printLog("Polymorphism Factor:"+pf);
-						
+						HidingFactor h = new HidingFactor(system);
 
-						CF cf=new CF(system);
-						printLog("Coupling Factor:"+cf);
+						PF pf = new PF(system);
 
-//						MIF mif = new MIF(system);
-//						printLog(mif+"");
-//						
-//						AIF aif = new AIF(system);
-//						printLog(aif+"");
+						CF cf = new CF(system);
 
+						MIF mif = new MIF(system);
+
+						AIF aif = new AIF(system);
+
+						StringBuilder builder = new StringBuilder();
+						builder.append("Metrics :\n");
+						builder.append(h.systemMHFValue + "\n");
+						builder.append("AHF:\t");
+						builder.append(h.systemAHFValue + "\n");
+						builder.append("Mif:\t");
+						builder.append(mif + "\n");
+						builder.append("AIF:\t");
+						builder.append(aif + "\n");
+						builder.append("PF:\t");
+						builder.append(pf + "\n");
+						builder.append("CF:\t");
+						builder.append(cf + "\n");
+						builder.append("No Of Classes:\t"
+								+ ProjectUtils.totNumberOfClasses + "\n");
+						builder.append("Avg. No of Methods:\t"
+								+ (ProjectUtils.totNumberOfMethods / (float) ProjectUtils.totNumberOfClasses)
+								+ "\n");
+						builder.append("System NOH:\t"+ProjectUtils.totHierarchies+"\n");
+						builder.append("Avg. NOC:\t"+ProjectUtils.avgNOC+"\n");
+						builder.append("*****END Of METRIC*****");
 						
-						if(selectedPackageFragmentRoot != null) {
+						printLog(builder.toString());
+						if (selectedPackageFragmentRoot != null) {
 							// package fragment root selected
-						}
-						else if(selectedPackageFragment != null) {
+						} else if (selectedPackageFragment != null) {
 							// package fragment selected
-						}
-						else if(selectedCompilationUnit != null) {
+						} else if (selectedCompilationUnit != null) {
 							// compilation unit selected
-						}
-						else if(selectedType != null) {
+						} else if (selectedType != null) {
 							// type selected
-						}
-						else if(selectedMethod != null) {
+						} else if (selectedMethod != null) {
 							// method selected
-						}
-						else {
+						} else {
 							// java project selected
 						}
 					}
@@ -181,7 +174,7 @@ public class MetricsAction  implements IObjectActionDelegate {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -193,8 +186,8 @@ public class MetricsAction  implements IObjectActionDelegate {
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		this.part = targetPart;
 	}
-	public static void printLog(String lineToWrite)
-	{
+
+	public static void printLog(String lineToWrite) {
 		System.out.println(lineToWrite);
 		writer.append(lineToWrite);
 	}

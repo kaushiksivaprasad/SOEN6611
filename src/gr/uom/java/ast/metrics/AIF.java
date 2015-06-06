@@ -1,18 +1,17 @@
 package gr.uom.java.ast.metrics;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
 import gr.uom.java.ast.Access;
 import gr.uom.java.ast.ClassObject;
 import gr.uom.java.ast.FieldObject;
 import gr.uom.java.ast.SystemObject;
 import gr.uom.java.ast.TypeObject;
 import gr.uom.java.ast.util.ProjectUtils;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Set;
 
 public class AIF {
 
