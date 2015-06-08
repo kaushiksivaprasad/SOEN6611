@@ -1,4 +1,4 @@
-package gr.uom.java.testcases.newpackage.testingMIFAIF;
+package gr.uom.java.testcases.newpackage.testingMHFAHF;
 
 public class SimpleLeaf {
 	int defaultAttr = 0;
